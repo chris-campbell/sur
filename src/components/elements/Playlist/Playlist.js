@@ -1,8 +1,9 @@
 import React from "react";
 import "./Playlist.css";
+
 const Playlist = () => {
   return (
-    <div className="sur-playlist">
+    <div>
       <h3>Tracks</h3>
       <ul>
         <li>1 The Ruler’s Back</li>
