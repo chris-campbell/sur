@@ -5,7 +5,7 @@ const Navigation = () => {
 
     return (
 
-        <h3>Navi</h3>
+        <h3>Nav</h3>
 
     )
 }

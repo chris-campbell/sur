@@ -1,5 +1,4 @@
 import React from "react";
-import { TOP_CHART_API, API } from "../../../config";
 
 class SearchBar extends React.Component {
   state = {

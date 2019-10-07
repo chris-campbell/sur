@@ -4,77 +4,67 @@ import Player from "../Player/Player";
 import { TOP_CHART_API, API } from "../../../config";
 import Playlist from "../../elements/Playlist/Playlist";
 import "./SurBox.css";
-import "../../elements/Navigation/Navigation.css"
+import "../../elements/Navigation/Navigation.css";
 import "../Player/Player.css";
 import axios from "axios";
-import Navigation from '../Navigation/Navigation';
+import Navigation from "../Navigation/Navigation";
 import SearchBar from "../SearchBar/SearchBar";
 
 class SurBox extends React.Component {
   state = {
     artistName: null,
-    track: null,
-    albumTitle: null,
-    albumCover: null,
+    trackTitle: null,
+    album: null,
     backgroundCover: null,
     loading: false,
-    searchTerm: ''
-  }
+    searchTerm: ""
+  };
 
   // Collects  data from api request.
   componentDidMount() {
     this.setState({ loading: true });
     const endpoint = TOP_CHART_API;
-    this.fetchItems(endpoint);
+    console.log(endpoint);
+    this.fetchPlaylistItems(endpoint);
   }
 
-  fetchItems = (endpoint) => {
-    axios.get(endpoint)
+  fetchPlaylistItems = endpoint => {
+    axios
+      .get(endpoint)
       .then(result => {
-        // console.log(result.data)
-        this.setState({
-          artistName: result.data.tracks.data[0].artist.name,
-          albumCover: result.data.tracks.data[0].album.cover,
-          albumTitle: result.data.tracks.data[0].album.title,
-          track: result.data.tracks.data[0].title,
-          backgroundCover: result.data.tracks.data[0].artist.picture_big
-        })
+        if (result.data.data !== undefined) {
+          result.data.data.forEach(track => {
+            this.setState({
+              artistName: track.artist.name,
+              trackTitle: track.title,
+              album: track.album.title,
+              backgroundCover: track.artist.picture_xl
+            });
+          });
+        }
       })
-  }
-
-  fetchPlaylistItems = (endpoint) => {
-    axios.get(endpoint)
-      .then(result => {
-        console.log(result)
-      })
-  }
+  };
 
   searchTerm = searchTerm => {
-    // console.log(searchTerm);
     let endpoint = "";
     this.setState({
       searchTerm: searchTerm
     });
 
-    if (searchTerm === '') {
-      endpoint = TOP_CHART_API;
-    } else {
-      endpoint = `${API}${searchTerm}`;
-    }
-    console.log(endpoint)
-    this.fetchPlaylistItems(endpoint)
-  }
+    endpoint = `${API}"${searchTerm}"`;
+
+    this.fetchPlaylistItems(endpoint);
+  };
 
   render() {
-
-    let imgUrl = this.state.backgroundCover
+    let imgUrl = this.state.backgroundCover;
     let styles = {
-      backgroundImage: `url(${imgUrl})`,
-      backgroundRepeat: 'no-repeat',
-      backgroundPosition: 'center',
-      backgroundSize: '50% auto',
-      resize: 'both'
-    }
+      backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.67), rgba(0, 0, 0, 0.67)), url(${imgUrl})`,
+      backgroundRepeat: "no-repeat",
+      backgroundPosition: "center",
+      backgroundSize: "100% auto",
+      resize: "both"
+    };
 
     return (
       <div className="sur-box container" style={styles}>
@@ -82,14 +72,14 @@ class SurBox extends React.Component {
           <div className="sur-navi col-1">
             <Navigation />
           </div>
-          <div className="sur-music-info col-11 container" >
+          <div className="sur-music-info col-11 container">
             <div className="row">
               <div className="sur-artist-info col-8">
                 <SearchBar callback={this.searchTerm} />
                 <Artist
                   artist={this.state.artistName}
-                  track={this.state.track}
-                  albumtitle={this.state.albumTitle}
+                  track={this.state.trackTitle}
+                  albumtitle={this.state.album}
                   bgImage={this.state.backgroundCover}
                 />
               </div>
@@ -105,7 +95,6 @@ class SurBox extends React.Component {
       </div>
     );
   }
-
 }
 
 export default SurBox;
