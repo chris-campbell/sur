@@ -7,3 +7,63 @@
   margin: 0 auto;
   /* background: #313131; */
 }
+
+.sur-box input {
+  width: 314px;
+  height: 41px;
+  background: none;
+  border-radius: 50px;
+  border: 1px solid #fff;
+  position: relative;
+  top: 11px;
+  left: 10%;
+  color: #fff;
+}
+
+.sur-info-box {
+  height: 519px;
+}
+
+.sur-tracks {
+  background: rgb(33, 17, 48)
+}
+
+.sur-artist-info p {
+  position: relative;
+  top: 30px;
+}
+
+.sur-artist-info h1 {
+  position: relative;
+  font-size: 54px;
+  font-weight: 900;
+  top: 320px;
+  color: #fff;
+}
+
+.sur-artist-info p {
+  position: relative;
+  top: 309px;
+}
+
+.album {
+  position: relative;
+  top: 292px;
+}
+.sur-artist-info h1, .sur-artist-info p {
+  color: #b7b7b7;
+}
+
+.sur-tracks {
+  background: rgb(33, 17, 48);
+  color: #fff;
+}
+
+.sur-player {
+  background: #040404;
+  border-top: 3px solid #ffc107;
+}
+
+.sur-tracks li {
+  font-size: 15px;
+}
