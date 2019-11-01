@@ -1,4 +1,6 @@
 .sur-player {
     background: lightgreen;
     height: 65px;
+    border-bottom-right-radius: 20px;
+    border-bottom-left-radius: 20px;
 }

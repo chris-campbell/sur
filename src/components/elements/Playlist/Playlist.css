@@ -2,3 +2,33 @@
   float: right;
   width: 20%;
 }
+
+.sur-track-listing {
+  overflow-y: scroll;
+  max-height: 273px;
+  margin-top: 27px;
+}
+
+.sur-track-listing li {
+  list-style: none;
+}
+
+.sur-track-listing li a {
+  text-decoration: none;
+  color: grey;
+}
+
+.sur-album-cover img {
+  width: 70px;
+  margin-right: 16px;
+}
+
+.sur-album-info h5 {
+  font-size: 13px;
+}
+
+.sur-track-listing::-webkit-scrollbar-thumb {
+border-radius: 10px;
+background: yellowgreen; 
+box-shadow: inset 0 0 6px rgba(0,0,0,0.5); 
+}

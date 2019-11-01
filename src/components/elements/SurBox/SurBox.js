@@ -15,11 +15,13 @@ class SurBox extends React.Component {
     artistName: null,
     trackTitle: null,
     album: null,
+    albumCover: null,
     backgroundCover: null,
     tracks: [],
     loading: false,
+    searchTerm: "",
     limitTo: 10,
-    searchTerm: ""
+    trackInfo: null
   };
 
   componentDidMount() {
@@ -27,7 +29,8 @@ class SurBox extends React.Component {
     const endpoint = TOP_CHART_API;
     this.fetchPlaylistItems(endpoint);
   }
-
+  
+  // Fetches API data
   fetchPlaylistItems = endpoint => {
     axios
     .get(endpoint)
@@ -38,7 +41,8 @@ class SurBox extends React.Component {
             artistName: track.artist.name,
             trackTitle: track.title,
             album: track.album.title,
-            tracks: result.data.data,
+            albumCover: track.album.cover_medium,
+            tracks: [...result.data.data],
             backgroundCover: track.artist.picture_xl,
             loading: false
           });
@@ -58,18 +62,33 @@ class SurBox extends React.Component {
     if (this.state.loading === true) {
       this.setDefaultTrackLimit();
     }
-
-    endpoint = `${API}"${searchTerm}"`;
+    
+    if (searchTerm === ''){
+      endpoint = TOP_CHART_API;
+    } else {
+      endpoint = `${API}"${searchTerm}"`; 
+    }
     this.fetchPlaylistItems(endpoint);
   };
 
   loadMoreTracks = () => {
-    this.setState({ limitTo: this.state.limitTo + 5 })
+    // if (this.state.tracks <= this.state.limitTo)  {
+      this.setState({ limitTo: this.state.limitTo + 5 })
+    // }
+  }
+
+  trackInfoFromChild = (callback) => {
+    this.setState({ trackInfo: callback })
+  }
+  
+  parentTest = (callback) => {
+    alert(callback);
   }
 
   setDefaultTrackLimit = () => {
     this.setState({ limitTo: 10 })
   }
+  
 
   render() {
     let imgUrl = this.state.backgroundCover;
@@ -82,7 +101,7 @@ class SurBox extends React.Component {
       height: "519px"
     };
 
-    return (
+    return(
       <div className="sur-box container">
         <div className="row">
           <div className="sur-navi col-1">
@@ -100,16 +119,23 @@ class SurBox extends React.Component {
                 />
               </div>
               <div className="sur-tracks col-4">
-                <Playlist 
+                <Playlist
                   trackslist={this.state.tracks}
                   loadMoreTracks={this.loadMoreTracks}
-                  limit={this.state.limitTo} 
+                  limit={this.state.limitTo}
+                  albumCover={this.state.albumCover}
+                  albumTitle={this.state.album}
+                  trackTitle={this.state.trackTitle}
+                  getTrackInfo={this.trackInfoFromChild}
                 />
               </div>
             </div>
           </div>
           <div className="sur-player col-12">
-            <Player />
+            <Player 
+              trackInfo={this.state.trackInfo}
+              trackList={this.state.tracks}
+            />
           </div>
         </div>
       </div>
