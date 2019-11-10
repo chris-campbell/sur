@@ -10,6 +10,7 @@ import axios from "axios";
 import Navigation from "../Navigation/Navigation";
 import SearchBar from "../SearchBar/SearchBar";
 
+
 class SurBox extends React.Component {
   state = {
     artistName: null,
@@ -36,7 +37,8 @@ class SurBox extends React.Component {
     .get(endpoint)
     .then(result => {
       if (result.data.data !== undefined) {
-        result.data.data.forEach (track => {
+        console.log(result.data)
+        result.data.data.forEach(track => {
           this.setState({
             artistName: track.artist.name,
             trackTitle: track.title,
@@ -50,7 +52,7 @@ class SurBox extends React.Component {
       }
     })
   };
-
+  
   searchTerm = searchTerm => {
     let endpoint = "";
 
@@ -72,26 +74,31 @@ class SurBox extends React.Component {
   };
 
   loadMoreTracks = () => {
-    // if (this.state.tracks <= this.state.limitTo)  {
-      this.setState({ limitTo: this.state.limitTo + 5 })
-    // }
+    this.setState({ limitTo: this.state.limitTo + 5 })
   }
 
   trackInfoFromChild = (callback) => {
     this.setState({ trackInfo: callback })
   }
   
-  parentTest = (callback) => {
-    alert(callback);
-  }
-
   setDefaultTrackLimit = () => {
     this.setState({ limitTo: 10 })
   }
   
-
   render() {
-    let imgUrl = this.state.backgroundCover;
+  
+    const { 
+      artistName,
+      trackTitle, album,
+      albumCover,
+      backgroundCover, 
+      tracks, 
+      loading, 
+      limitTo, 
+      trackInfo 
+    } = this.state;
+    
+    let imgUrl = backgroundCover;
     let styles = {
       backgroundImage: `linear-gradient(90deg, rgba(0, 0, 0, 0.67), rgb(33, 17, 48)), url(${imgUrl})`,
       backgroundRepeat: "no-repeat",
@@ -104,28 +111,26 @@ class SurBox extends React.Component {
     return(
       <div className="sur-box container">
         <div className="row">
-          <div className="sur-navi col-1">
-            <Navigation />
-          </div>
-          <div className="sur-music-info col-11 container">
+          <div className="sur-music-info col-12
+          container">
             <div className="row">
               <div className="sur-artist-info col-8" style={styles}>
                 <SearchBar callback={this.searchTerm} />
                 <Artist
-                  artist={this.state.artistName}
-                  track={this.state.trackTitle}
-                  albumtitle={this.state.album}
-                  bgImage={this.state.backgroundCover}
+                  artist={artistName}
+                  track={trackTitle}
+                  albumtitle={album}
+                  bgImage={backgroundCover}
                 />
               </div>
               <div className="sur-tracks col-4">
                 <Playlist
-                  trackslist={this.state.tracks}
+                  trackslist={tracks}
                   loadMoreTracks={this.loadMoreTracks}
-                  limit={this.state.limitTo}
-                  albumCover={this.state.albumCover}
-                  albumTitle={this.state.album}
-                  trackTitle={this.state.trackTitle}
+                  limit={limitTo}
+                  albumCover={albumCover}
+                  albumTitle={album}
+                  trackTitle={trackTitle}
                   getTrackInfo={this.trackInfoFromChild}
                 />
               </div>
@@ -133,8 +138,9 @@ class SurBox extends React.Component {
           </div>
           <div className="sur-player col-12">
             <Player 
-              trackInfo={this.state.trackInfo}
-              trackList={this.state.tracks}
+              trackInfo={trackInfo}
+              trackList={tracks}
+              search={this.search}
             />
           </div>
         </div>

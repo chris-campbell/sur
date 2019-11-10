@@ -1,6 +1,17 @@
+#audio-player {
+    background: red;
+}
+
 .sur-player {
-    background: lightgreen;
+    background: #211130;
     height: 65px;
     border-bottom-right-radius: 20px;
     border-bottom-left-radius: 20px;
+    border-top: 3px solid #3c84ffa1;
 }
+
+audio::-webkit-media-controls-panel {
+    width: 500px;
+}
+
+
