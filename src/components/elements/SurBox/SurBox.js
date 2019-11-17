@@ -7,7 +7,6 @@ import "./SurBox.css";
 import "../../elements/Navigation/Navigation.css";
 import "../Player/Player.css";
 import axios from "axios";
-import Navigation from "../Navigation/Navigation";
 import SearchBar from "../SearchBar/SearchBar";
 
 
@@ -22,7 +21,8 @@ class SurBox extends React.Component {
     loading: false,
     searchTerm: "",
     limitTo: 10,
-    trackInfo: null
+    trackInfo: null,
+    starterTrack: null
   };
 
   componentDidMount() {
@@ -37,7 +37,6 @@ class SurBox extends React.Component {
     .get(endpoint)
     .then(result => {
       if (result.data.data !== undefined) {
-        console.log(result.data)
         result.data.data.forEach(track => {
           this.setState({
             artistName: track.artist.name,
@@ -46,11 +45,12 @@ class SurBox extends React.Component {
             albumCover: track.album.cover_medium,
             tracks: [...result.data.data],
             backgroundCover: track.artist.picture_xl,
+            starterTrack: track.preview,
             loading: false
           });
         });
       }
-    })
+    });
   };
   
   searchTerm = searchTerm => {
@@ -140,6 +140,7 @@ class SurBox extends React.Component {
             <Player 
               trackInfo={trackInfo}
               trackList={tracks}
+              starter={this.state.starterTrack}
               search={this.search}
             />
           </div>
