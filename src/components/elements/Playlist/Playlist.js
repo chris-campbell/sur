@@ -2,17 +2,12 @@ import React from "react";
 import "./Playlist.css";
 
 class Playlist extends React.Component {
-
-  doubleClick(event) {
-    var event = new MouseEvent('dbclick', {
-      'view': window,
-
-    })
+  state = {
+    albumCover: "https://via.placeholder.com/45",
+    albumTitle: null,
   }
 
-  // Gathers track in to be used in player component
   trackInfo = (event) => {
-    // Added both track and track number to array
     var info = [];
     info.push(event.target.getAttribute("data-track"));
     info.push(event.target.getAttribute("data-num"));
@@ -20,21 +15,27 @@ class Playlist extends React.Component {
     info.push(event.target.getAttribute("data-cover"));
     info.push(event.target.getAttribute("data-title"));
     info.push(event.target.getAttribute("data-duration"));
-    // Sends track info array to parent Sur
+    this.setState({
+      albumCover: event.target.getAttribute("data-cover"),
+      albumTitle: event.target.getAttribute("data-title")
+    })
     this.props.getTrackInfo(info);
-
   }
 
-
+  componentDidUpdate(prevProps) {
+    if (prevProps.test !== this.props.test) {
+      if (this.props.test[0]) {
+        this.setState({
+          albumCover: this.props.test[0],
+          albumTitle: this.props.test[1]
+        })
+      }
+    }
+  }
 
   render() {
-    // assigns track list to tracks variable
     const tracks = this.props.trackslist;
-
     const listing = tracks.slice(0, this.props.limit).map((track, trackNum) => {
-      // let audio = new Audio(track.preview)
-      // console.log(audio);
-      // // console.log(audio)
       return <li
         data-num={trackNum}
         data-track={track.preview}
@@ -42,33 +43,31 @@ class Playlist extends React.Component {
         data-title={track.title}
         data-load={true}
         onClick={this.trackInfo}
-        key={trackNum}
-      >
+        key={trackNum}>
         {track.title}
       </li>
     })
 
     return (
-      <div>
+      <div id="sur-playlist">
         <h3>Tracks</h3>
         <ul id="sur-track-listing">{listing}</ul>
-        <a href="#" onClick={this.props.loadMoreTracks}>Load more</a>
+        <a className="load-more" href="#" onClick={this.props.loadMoreTracks}>Load more</a>
         <div className="sur-album">
           <h3>Album</h3>
           <div>
             <div className="row">
-              <div className="col-6-sm sur-album-cover">
-                <img src={this.props.albumCover} />
+              <div className="col-6 sur-album-cover">
+                <img src={this.state.albumCover} alt="album cover" />
               </div>
-              <div className="sur-album-info col-6-sm">
-                <h5>{this.props.albumTitle}</h5>
-                <span>{this.props.trackTitle}</span>
+              <div className="sur-album-info col">
+                <h5>{this.state.albumTitle}</h5>
               </div>
             </div>
           </div>
         </div>
       </div>
-    );
+    )
   }
 }
 

@@ -23,6 +23,7 @@ class SearchBar extends React.Component {
         className="sur-searbar"
         onChange={this.doSearch}
         value={this.state.value}
+        placeholder="Type artist name . . ."
       />
     )
   }

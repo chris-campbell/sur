@@ -1,12 +1,12 @@
 import React from "react";
 import Artist from "../Artist/Artist";
 import Player from "../Player/Player";
-import { TOP_CHART_API, API } from "../../../config";
 import Playlist from "../../elements/Playlist/Playlist";
 import "./SurBox.css";
 import "../../elements/Navigation/Navigation.css";
 import "../Player/Player.css";
 import axios from "axios";
+import { TOP_CHART_API, API } from "../../../config";
 import SearchBar from "../SearchBar/SearchBar";
 
 
@@ -22,7 +22,8 @@ class SurBox extends React.Component {
     searchTerm: "",
     limitTo: 10,
     trackInfo: null,
-    starterTrack: null
+    starterTrack: null,
+    albumStuff: null
   };
 
   componentDidMount() {
@@ -30,8 +31,7 @@ class SurBox extends React.Component {
     const endpoint = TOP_CHART_API;
     this.fetchPlaylistItems(endpoint);
   }
-  
-  // Fetches API data
+
   fetchPlaylistItems = endpoint => {
     axios
     .get(endpoint)
@@ -52,7 +52,7 @@ class SurBox extends React.Component {
       }
     });
   };
-  
+
   searchTerm = searchTerm => {
     let endpoint = "";
 
@@ -64,7 +64,7 @@ class SurBox extends React.Component {
     if (this.state.loading === true) {
       this.setDefaultTrackLimit();
     }
-    
+  
     if (searchTerm === ''){
       endpoint = TOP_CHART_API;
     } else {
@@ -77,6 +77,10 @@ class SurBox extends React.Component {
     this.setState({ limitTo: this.state.limitTo + 5 })
   }
 
+  setAlbum = (callback) => {
+    this.setState({albumStuff: callback})
+  }
+
   trackInfoFromChild = (callback) => {
     this.setState({ trackInfo: callback })
   }
@@ -84,68 +88,58 @@ class SurBox extends React.Component {
   setDefaultTrackLimit = () => {
     this.setState({ limitTo: 10 })
   }
-  
+
   render() {
-  
-    const { 
-      artistName,
-      trackTitle, album,
-      albumCover,
-      backgroundCover, 
-      tracks, 
-      loading, 
-      limitTo, 
-      trackInfo 
-    } = this.state;
-    
-    let imgUrl = backgroundCover;
+    let imgUrl = this.state.backgroundCover;
     let styles = {
       backgroundImage: `linear-gradient(90deg, rgba(0, 0, 0, 0.67), rgb(33, 17, 48)), url(${imgUrl})`,
       backgroundRepeat: "no-repeat",
       backgroundPosition: "center",
       backgroundSize: "100% auto",
       resize: "both",
-      height: "519px"
+      height: "519px",
+      borderTopLeftRadius: "21px"
     };
 
     return(
-      <div className="sur-box container">
-        <div className="row">
-          <div className="sur-music-info col-12
-          container">
-            <div className="row">
-              <div className="sur-artist-info col-8" style={styles}>
-                <SearchBar callback={this.searchTerm} />
-                <Artist
-                  artist={artistName}
-                  track={trackTitle}
-                  albumtitle={album}
-                  bgImage={backgroundCover}
-                />
-              </div>
-              <div className="sur-tracks col-4">
-                <Playlist
-                  trackslist={tracks}
-                  loadMoreTracks={this.loadMoreTracks}
-                  limit={limitTo}
-                  albumCover={albumCover}
-                  albumTitle={album}
-                  trackTitle={trackTitle}
-                  getTrackInfo={this.trackInfoFromChild}
-                />
+      <main className="sur-box container">
+          <div className="row">
+            <div className="sur-music-info col-12
+            container">
+              <div className="row">
+                <div className="sur-artist-info col-8" style={styles}>
+                  <SearchBar callback={this.searchTerm} />
+                  <Artist
+                    artist={this.state.artistName}
+                    track={this.state.trackTitle}
+                    albumtitle={this.state.album}
+                    bgImage={this.state.backgroundCover}
+                  />
+                </div>
+                <div className="sur-tracks col-4">
+                  <Playlist
+                    trackslist={this.state.tracks}
+                    loadMoreTracks={this.loadMoreTracks}
+                    limit={this.state.limitTo}
+                    albumCover={this.state.albumCover}
+                    albumTitle={this.state.album}
+                    trackTitle={this.state.trackTitle}
+                    getTrackInfo={this.trackInfoFromChild}
+                    test={this.state.albumStuff}
+                  />
+                </div>
               </div>
             </div>
+            <div className="sur-player col-12">
+              <Player 
+                trackInfo={this.state.trackInfo}
+                trackList={this.state.tracks}
+                search={this.search}
+                albumstuff={this.setAlbum}
+              />
+            </div>
           </div>
-          <div className="sur-player col-12">
-            <Player 
-              trackInfo={trackInfo}
-              trackList={tracks}
-              starter={this.state.starterTrack}
-              search={this.search}
-            />
-          </div>
-        </div>
-      </div>
+      </main>
     );
   }
 }

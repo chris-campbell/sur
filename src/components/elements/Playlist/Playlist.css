@@ -1,6 +1,26 @@
-.sur-playlist {
-  float: right;
-  width: 20%;
+#sur-playlist {
+  position: relative;
+  right: 17px;
+  top: 22px;
+}
+
+#sur-playlist h3 {
+  font-size: 19px;
+  margin-left: 32px;
+  position: relative;
+  top: 15px;
+}
+
+.sur-tracks {
+  background: rgb(33, 17, 48);
+  color: #fff;
+  padding-left: 10px;
+  position: relative;
+  border-top-right-radius: 21px;
+}
+
+.sur-tracks li {
+  font-size: 15px;
 }
 
 #sur-track-listing {
@@ -21,14 +41,43 @@
 .sur-album-cover img {
   width: 70px;
   margin-right: 16px;
+  margin-left: 43px;
+  position: relative;
+  top: 14px;
+  border-radius: 2px;
+}
+
+.sur-album-info h5 {
+  font-size: 14px;
+  position: relative;
+  top: 18px;
+  right: 16px;
 }
 
 sur-album-info h5 {
   font-size: 13px;
 }
 
+.load-more {
+  margin-left: 204px;
+  font-size: 12px;
+}
 
 
-#sur-track-listing::-webkit-scrollbar-thumb {
-	background-color: purple !important;
+ul::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  border-radius: 10px;
+  background-color: #171b25;
+}
+
+ul::-webkit-scrollbar {
+  width: 20px;
+  background-color: #211230;
+}
+
+ul::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, .3);
+  background-color: #3759b1;
+  height: 10px;
 }

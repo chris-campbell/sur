@@ -23,6 +23,7 @@ audio::-webkit-media-controls-panel {
   color: #fff;
   position: relative;
   top: 10px;
+  font-size: 12px;
 }
 
 .sur-player-controls {
@@ -46,20 +47,3 @@ audio::-webkit-media-controls-panel {
   color: #fff;
   text-align: center;
 }
-
-
-/*.sur-player .sur-player-prev-btn {*/
-/*    margin-right: 28%;*/
-/*}*/
-
-/*.sur-player .sur-player-prev-btn:hover {*/
-/*    width: 23px;*/
-/*}*/
-
-/*.sur-player .sur-player-next-btn:hover {*/
-/*    width: 23px;*/
-/*}*/
-
-/*.sur-player .sur-player-next-btn {*/
-/*    margin-left: 24%;*/
-/*}*/

@@ -1,3 +1,13 @@
+body {
+  background: #444343 !important;
+}
+
+.sur-box {
+  font-family: 'Lato', sans-serif;
+  position: relative;
+  top: 100px;
+}
+
 .sur-box {
   width: 80%;
   height: 583px;
@@ -5,60 +15,30 @@
   max-width: 923px !important;
   border-radius: 5px;
   margin: 0 auto;
-  /* background: #313131; */
 }
 
 .sur-box input {
   width: 346px;
   height: 41px;
-  background: none;
+  background: #ffffff26;
   border-radius: 50px;
-  border: 1px solid #ffffff4f;
+  border: 1px solid #ffffff00;
   position: relative;
-  top: 11px;
+  top: 19px;
   left: 10%;
   color: #fff;
 }
 
-.sur-info-box {
-  height: 519px;
+.sur-box input[type=text] {
+ padding-left: 18px;
 }
 
-.sur-tracks {
-  background: rgb(33, 17, 48)
-}
-
-.sur-artist-info p {
+.sur-info-box .sur-artist-name h1 {
   position: relative;
-  top: 30px;
-}
-
-.sur-artist-info h1 {
-  position: relative;
-  font-size: 54px;
-  font-weight: 900;
-  top: 320px;
+  top: 345px;
+  left: 41px;
+  font-family: 'Lato', sans-serif;
   color: #fff;
+  font-size: 62px;
 }
 
-.sur-artist-info p {
-  position: relative;
-  top: 309px;
-}
-
-.album {
-  position: relative;
-  top: 292px;
-}
-.sur-artist-info h1, .sur-artist-info p {
-  color: #b7b7b7;
-}
-
-.sur-tracks {
-  background: rgb(33, 17, 48);
-  color: #fff;
-}
-
-.sur-tracks li {
-  font-size: 15px;
-}

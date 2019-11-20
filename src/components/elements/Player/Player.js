@@ -5,7 +5,6 @@ import pause from "./img/pause.png";
 import play from "./img/play.png";
 import Duration from "../../elements/Duration/Duration";
 
-
 class Player extends React.Component {
   constructor(props) {
     super(props);
@@ -22,8 +21,11 @@ class Player extends React.Component {
     this.durationlev = null
   }
 
+  accessChild = () => {
+    this.refs.child.restartSeconds();
+  }
+
   play = () => {
-    var audio1 = document.getElementById('audio-main');
     this.setState({ isPlaying: true }, () => {
       this.refs.audio.play();
     });
@@ -36,9 +38,9 @@ class Player extends React.Component {
   }
 
   next = () => {
+    let info = []
     this.setState({ trackNumber: (this.state.trackNumber + 1) },
       () => {
-        // Plays next track if its available
         if (this.props.trackList[this.state.trackNumber].preview) {
           this.setState({
             isPlaying: true,
@@ -50,34 +52,42 @@ class Player extends React.Component {
             this.refs.audio.pause();
             this.refs.audio.load();
             this.refs.audio.play();
+            info.push(this.state.trackImg)
+            info.push(this.state.trackTitle)
+            this.props.albumstuff(info)
+            this.accessChild();
           });
         }
       });
   }
 
   prev = () => {
+    let info = [];
     if (this.state.trackNumber > 0) {
       this.setState({ trackNumber: this.state.trackNumber - 1 },
         () => {
-          // Plays previous track if its available
           if (this.props.trackList[this.state.trackNumber].preview) {
             this.setState({
               isPlaying: true,
               url: this.props.trackList[this.state.trackNumber].preview,
               trackImg: this.props.trackList[this.state.trackNumber].album.cover_small,
-              trackTitle: this.props.trackList[this.state.trackNumber].album.title,
+              trackTitle: this.props.trackList[this.state.trackNumber].title,
               audioDurationTime: this.audioDuration(this.refs.audio)
             }, () => {
               this.refs.audio.pause();
               this.refs.audio.load();
               this.refs.audio.play();
+              info.push(this.state.trackImg)
+              info.push(this.state.trackTitle)
+              this.props.albumstuff(info)
+              this.accessChild();
+              this.accessChild();
             });
           }
         });
     }
   }
 
-  // When track URL changes play updated track
   componentDidUpdate(prevProps) {
     if (this.props.trackInfo !== prevProps.trackInfo) {
       this.setState({
@@ -91,7 +101,7 @@ class Player extends React.Component {
         this.refs.audio.pause();
         this.refs.audio.load();
         this.refs.audio.play();
-
+        this.accessChild();
       });
     } else {
       var audio1 = document.getElementById('audio-main');
@@ -103,7 +113,6 @@ class Player extends React.Component {
     }
   }
 
-  // Toggles play and pause image when used.
   imageToggle = () => {
     let image = this.state.isPlaying === true ? this.state.pauseImage : this.state.playImage;
     return image;
@@ -124,12 +133,14 @@ class Player extends React.Component {
   render() {
     const durationProps = {
       duration: this.state.audioDurationTime,
-      isPlaying: this.state.isPlaying
+      isPlaying: this.state.isPlaying,
+      trackNumber: this.state.trackNumber
     }
+
     return (
       <div className="row">
         <div className="sur-track-info col-4">
-          <img src={this.state.trackImg} />
+          <img src={this.state.trackImg || "https://via.placeholder.com/45"} alt="small-album-cover" />
           <span>{this.state.trackTitle}</span>
         </div>
         <div className="sur-player-console col-8">
@@ -138,11 +149,11 @@ class Player extends React.Component {
           </audio>
           <div className="sur-player-controls row">
             <div className="sur-player-btns col">
-              <img className="sur-player-prev-btn" src={prev} onClick={this.prev} />
-              <img className="sur-play-btn" onClick={this.state.isPlaying ? this.pause : this.play} src={this.imageToggle()} />
-              <img className="sur-player-next-btn" src={next} onClick={this.next} />
+              <img className="sur-player-prev-btn" src={prev} onClick={this.prev} alt="prev-button" />
+              <img className="sur-play-btn" onClick={this.state.isPlaying ? this.pause : this.play} src={this.imageToggle()} alt="play-button" />
+              <img className="sur-player-next-btn" src={next} onClick={this.next} alt="next-button" />
             </div>
-            <Duration time={durationProps} />
+            <Duration ref="child" time={durationProps} />
           </div>
         </div>
       </div>
